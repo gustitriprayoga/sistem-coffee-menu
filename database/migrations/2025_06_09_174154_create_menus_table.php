@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kategori_id')->constrained('kategori_menus')->onDelete('cascade');
+            $table->foreignId('kategori_menu_id')->constrained('kategori_menus')->onDelete('cascade');
             $table->string('nama');
             $table->text('deskripsi')->nullable();
             $table->decimal('harga', 10, 2);

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PesananResource\Pages;
 use App\Filament\Resources\PesananResource\RelationManagers;
+use App\Filament\Resources\PesananResource\RelationManagers\DetailRelationManager;
 use App\Models\Pesanan;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -14,11 +15,15 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+
 class PesananResource extends Resource
 {
     protected static ?string $model = Pesanan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
+    protected static ?string $navigationGroup = 'Manajemen Pesanan';
+    protected static ?string $navigationLabel = 'Pesanan Masuk';
+
 
     public static function form(Form $form): Form
     {
@@ -99,7 +104,7 @@ class PesananResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            DetailRelationManager::class,
         ];
     }
 

@@ -18,6 +18,8 @@ class KategoriMenuResource extends Resource
     protected static ?string $model = KategoriMenu::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Manajemen Menu';
+    protected static ?string $navigationLabel = 'Kategori';
 
     public static function form(Form $form): Form
     {

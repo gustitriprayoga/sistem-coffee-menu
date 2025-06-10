@@ -14,8 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SpatieRole::class,
-            // KategoriMenuSeeder::class,
-            // MenuSeeder::class,
+            KategoriSeeder::class,
+            MenuSeeder::class,
             // UserSeeder::class,
             // PesananSeeder::class,
             // DetailPesananSeeder::class,
