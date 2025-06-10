@@ -28,9 +28,10 @@ class DetailRelationManager extends RelationManager
                     ->getStateUsing(fn($record) => $record->kuantitas * $record->harga)
                     ->money('IDR'),
             ])
-            ->headerActions([]) // disable tambah
-            ->actions([])       // disable edit/hapus
-            ->bulkActions([]);
+            // ->headerActions([]) // disable tambah
+            // ->actions([])       // disable edit/hapus
+            // ->bulkActions([])
+            ;
     }
 
     public function table(Table $table): Table

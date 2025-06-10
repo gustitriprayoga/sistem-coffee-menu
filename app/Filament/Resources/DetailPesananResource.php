@@ -5,10 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DetailPesananResource\Pages;
 use App\Filament\Resources\DetailPesananResource\RelationManagers;
 use App\Models\DetailPesanan;
+use Dom\Text;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -44,10 +46,11 @@ class DetailPesananResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('pesanan_id')
-                    ->numeric()
+                TextColumn::make('pesanan.nama_pelanggan')
+                    ->label('Nama Pelanggan')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('menu_id')
+                TextColumn::make('menu.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kuantitas')
@@ -57,10 +60,12 @@ class DetailPesananResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Tanggal Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Tanggal Diperbarui')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

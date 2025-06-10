@@ -15,6 +15,11 @@
                     <p><strong>Alamat:</strong> {{ $p->alamat_pelanggan }}</p>
                     <p><strong>Metode Pembayaran:</strong>
                         {{ strtoupper(str_replace('_', ' ', $p->metode_pembayaran)) }}</p>
+                    @if ($p->bukti_pembayaran)
+                        <p><strong>Bukti Pembayaran:</strong></p>
+                        <img src="{{ Storage::url($p->bukti_pembayaran) }}" class="img-fluid mb-3"
+                            style="max-height: 200px;">
+                    @endif
 
                     <h5>Detail Menu:</h5>
                     <ul class="list-group mb-3">

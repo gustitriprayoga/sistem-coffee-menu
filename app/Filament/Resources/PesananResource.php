@@ -11,6 +11,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -49,9 +50,11 @@ class PesananResource extends Resource
                         'e_wallet' => 'E-Wallet',
                     ])
                     ->required(),
-                Forms\Components\TextInput::make('bukti_pembayaran')
-                    ->maxLength(255)
-                    ->default(null),
+                Forms\Components\FileUpload::make('bukti_pembayaran')
+                    ->imageEditor()
+                    ->required()
+                    ->maxSize(1024)
+                    ->directory('bukti_pembayaran'),
                 Select::make('status')
                     ->options([
                         'menunggu' => 'Menunggu',
@@ -68,25 +71,30 @@ class PesananResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('user.name')
+                    ->label('Nama Pengguna')
+                    ->searchable()
+                    ->sortable()
+                    ->getStateUsing(fn (Pesanan $record) => $record->user?->name ?? 'Pelanggan Tanpa Login'),
                 Tables\Columns\TextColumn::make('nama_pelanggan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('telepon_pelanggan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('metode_pembayaran'),
                 Tables\Columns\TextColumn::make('bukti_pembayaran')
+                    ->getStateUsing(fn (Pesanan $record) => $record->bukti_pembayaran ? 'Tersedia' : 'Tidak Tersedia')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat Pada')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diupdate Pada')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->filters([
                 //
