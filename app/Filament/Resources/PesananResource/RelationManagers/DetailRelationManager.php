@@ -20,18 +20,19 @@ class DetailRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                TextColumn::make('menu.nama')->label('Menu'),
-                TextColumn::make('kuantitas')->label('Qty'),
-                TextColumn::make('harga')->money('IDR')->label('Harga Satuan'),
-                TextColumn::make('subtotal')
-                    ->label('Subtotal')
-                    ->getStateUsing(fn($record) => $record->kuantitas * $record->harga)
-                    ->money('IDR'),
-            ])
-            // ->headerActions([]) // disable tambah
-            // ->actions([])       // disable edit/hapus
-            // ->bulkActions([])
-            ;
+                Forms\Components\TextInput::make('pesanan_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('menu_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('kuantitas')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('harga')
+                    ->required()
+                    ->numeric(),
+            ]);
     }
 
     public function table(Table $table): Table
