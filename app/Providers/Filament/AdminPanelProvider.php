@@ -26,18 +26,17 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->brandName('Kedai Kopi Sederhana')
+            ->brandLogo(asset('images/logo.svg'))
+            ->favicon(asset('images/favicon.png'))
             ->id('admin')
             ->path('admin')
             ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->login()
             ->colors([
-                'primary' => Color::Blue,
-                'secondary' => Color::Gray,
-                'success' => Color::Green,
-                'danger' => Color::Red,
-                'warning' => Color::Yellow,
-                'info' => Color::Cyan,
+                'primary' => '#6366f1',
             ])
+            ->font('Poppins')
             ->navigationGroups([
                 'Manajemen Pesanan',
                 'Manajemen Menu',
