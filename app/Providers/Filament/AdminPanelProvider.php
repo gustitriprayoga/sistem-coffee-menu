@@ -26,7 +26,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->brandName('Kedai Kopi Sederhana')
+            ->brandName('Testing App')
             ->brandLogo(asset('images/logo.svg'))
             ->favicon(asset('images/favicon.png'))
             ->id('admin')

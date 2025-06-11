@@ -49,7 +49,7 @@ class MenuResource extends Resource
                 Forms\Components\FileUpload::make('gambar')
                     ->imageEditor()
                     ->required()
-                    ->maxSize(1024)
+                    ->maxSize(2048)
                     ->directory('menu-images'),
             ]);
     }
