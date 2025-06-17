@@ -9,10 +9,16 @@ class KategoriMenu extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $table = 'kategori_menus'; // Pastikan nama tabel ini benar
 
-    public function menu()
+    protected $fillable = [
+        'nama', // Ubah dari 'nama_kategori' menjadi 'nama'
+    ];
+
+    public function menus()
     {
-        return $this->hasMany(Menu::class);
+        return $this->hasMany(Menu::class, 'kategori_menu_id');
     }
+
+
 }

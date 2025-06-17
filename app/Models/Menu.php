@@ -9,9 +9,17 @@ class Menu extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $table = 'menus'; // Pastikan nama tabel ini benar
 
-    public function kategori()
+    protected $fillable = [
+        'kategori_menu_id',
+        'nama', // Ubah dari 'nama_menu' menjadi 'nama'
+        'deskripsi', // Ubah dari 'deskripsi_menu' menjadi 'deskripsi'
+        'harga', // Ini sudah benar
+        'gambar', // Ubah dari 'foto_menu' menjadi 'gambar'
+    ];
+
+    public function kategoriMenu()
     {
         return $this->belongsTo(KategoriMenu::class, 'kategori_menu_id');
     }

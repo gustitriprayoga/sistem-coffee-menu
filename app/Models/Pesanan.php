@@ -9,21 +9,26 @@ class Pesanan extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $table = 'pesanans';
+
+    protected $fillable = [
+        'user_id', // Tambahkan jika ada user_id yang bisa diisi
+        'nama_pelanggan',
+        'telepon_pelanggan',
+        'alamat_pelanggan',
+        'metode_pembayaran',
+        'bukti_pembayaran',
+        'total_harga', // TAMBAHKAN INI
+        'status',
+    ];
+
+    public function details()
+    {
+        return $this->hasMany(DetailPesanan::class, 'pesanan_id');
+    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-    public function detail()
-    {
-        return $this->hasMany(DetailPesanan::class);
-    }
-
-    public function detailPesanan()
-    {
-        return $this->hasMany(DetailPesanan::class, 'pesanan_id');
-    }
-
 }
