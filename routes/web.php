@@ -26,11 +26,14 @@ use App\Livewire\PesananSaya;
 */
 
 
-
 Route::get('/', Home::class)->name('home');
-Route::get('/keranjang', Keranjang::class)->name('keranjang');
-
 Route::get('/checkout', Checkout::class)->name('checkout');
+Route::get('/pesanan-saya', PesananSaya::class)->name('pesanan-saya'); // Pastikan ini juga ada
 
-Route::get('/pesanan', Pesanan::class)->name('pesanan')->middleware('auth');
-Route::get('/pesanan', PesananSaya::class)->name('pesanan');
+// Route::get('/', Home::class)->name('home');
+// Route::get('/keranjang', Keranjang::class)->name('keranjang');
+
+// Route::get('/checkout', Checkout::class)->name('checkout');
+
+// Route::get('/pesanan', Pesanan::class)->name('pesanan')->middleware('auth');
+// Route::get('/pesanan', PesananSaya::class)->name('pesanan');

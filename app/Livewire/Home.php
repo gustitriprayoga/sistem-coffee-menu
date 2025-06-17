@@ -2,47 +2,83 @@
 
 namespace App\Livewire;
 
-use App\Models\Menu;
-use App\Models\Kategori;
-use App\Models\KategoriMenu;
 use Livewire\Component;
+use App\Models\KategoriMenu;
+use App\Models\Menu;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.app')]
 class Home extends Component
 {
+    public $kategoriMenus;
+    public $menus;
+    public $selectedKategoriId = null;
     public $search = '';
 
-    public function tambahKeranjang($id)
-    {
-        $menu = Menu::findOrFail($id);
-        $keranjang = session()->get('keranjang', []);
+    protected $listeners = ['menuAddedToCart' => 'render']; // Listen for events from MenuList to re-render
 
-        if (isset($keranjang[$id])) {
-            $keranjang[$id]['qty']++;
-        } else {
-            $keranjang[$id] = [
-                'id' => $menu->id,
-                'nama' => $menu->nama,
-                'harga' => $menu->harga,
-                'qty' => 1,
-                'gambar' => $menu->gambar
-            ];
+    public function mount()
+    {
+        $this->kategoriMenus = KategoriMenu::all();
+        $this->loadMenus();
+    }
+
+    public function loadMenus()
+    {
+        $query = Menu::query();
+
+        if ($this->selectedKategoriId) {
+            $query->where('kategori_menu_id', $this->selectedKategoriId);
         }
 
-        session()->put('keranjang', $keranjang);
+        if ($this->search) {
+            $query->where('nama_menu', 'like', '%' . $this->search . '%')
+                ->orWhere('deskripsi', 'like', '%' . $this->search . '%');
+        }
 
-        session()->flash('success', 'Menu berhasil ditambahkan ke keranjang.');
+        $this->menus = $query->get();
     }
+
+    public function filterByKategori($kategoriId = null)
+    {
+        $this->selectedKategoriId = $kategoriId;
+        $this->loadMenus();
+    }
+
+    public function updatedSearch()
+    {
+        $this->loadMenus();
+    }
+
+    public function addToCart($menuId)
+    {
+        $menu = Menu::find($menuId);
+        if ($menu) {
+            $cart = session()->get('cart', []);
+
+            if (isset($cart[$menuId])) {
+                $cart[$menuId]['quantity']++;
+            } else {
+                $cart[$menuId] = [
+                    "id" => $menu->id,
+                    "nama_menu" => $menu->nama_menu,
+                    "harga" => $menu->harga,
+                    "quantity" => 1,
+                    "gambar_menu" => $menu->gambar_menu // Pastikan ini ada di model Menu dan bisa diakses
+                ];
+            }
+            session()->put('cart', $cart);
+            $this->dispatch('cartUpdated'); // Emit event to update cart display
+            $this->dispatch('menuAdded')->self(); // Dispatch event for SweetAlert
+        }
+    }
+
 
     public function render()
     {
-        $menus = Menu::with('kategori')
-            ->when($this->search, fn($q) => $q->where('nama', 'like', "%{$this->search}%"))
-            ->latest()
-            ->get();
-
-        $kategoris = KategoriMenu::all();
-
-        return view('livewire.home', compact('menus', 'kategoris'))
-            ->layout('layouts.app');
+        return view('livewire.home', [
+            'kategoriMenus' => $this->kategoriMenus,
+            'menus' => $this->menus,
+        ]);
     }
 }
