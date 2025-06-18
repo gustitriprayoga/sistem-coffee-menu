@@ -11,7 +11,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Spatie\Permission\Traits\HasRoles;
 
 class KategoriMenuResource extends Resource
 {
@@ -20,6 +22,31 @@ class KategoriMenuResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Manajemen Menu';
     protected static ?string $navigationLabel = 'Kategori';
+
+    public static function canViewAny(): bool
+    {
+        // Admin dan Karir bisa melihat daftar pesanan
+        return auth()->user()->hasAnyRole(['admin', 'kasir']);
+    }
+
+    public static function canCreate(): bool
+    {
+        // Hanya Admin yang bisa membuat pesanan baru dari panel
+        return auth()->user()->hasRole('admin');
+
+    }
+    public static function canEdit($record): bool
+    {
+        // Hanya Admin yang bisa mengedit
+        return auth()->user()->hasRole('admin');
+    }
+
+
+    public static function canDelete(Model $record): bool
+    {
+        // Hanya Admin yang bisa menghapus
+        return auth()->user()->hasRole('admin');
+    }
 
     public static function form(Form $form): Form
     {

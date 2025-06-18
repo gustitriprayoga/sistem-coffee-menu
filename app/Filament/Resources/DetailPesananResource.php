@@ -23,6 +23,20 @@ class DetailPesananResource extends Resource
 
     protected static ?string $navigationGroup = 'Manajemen Pesanan';
 
+    public static function canViewAny(): bool
+    {
+        // Admin dan Karir bisa melihat daftar pesanan
+        return auth()->user()->hasAnyRole(['admin', 'kasir']);
+    }
+
+    public static function canCreate(): bool
+    {
+        // Hanya Admin yang bisa membuat pesanan baru dari panel
+        return auth()->user()->hasRole('admin');
+    }
+
+
+
     public static function form(Form $form): Form
     {
         return $form

@@ -25,6 +25,31 @@ class MenuResource extends Resource
 
     protected static ?string $navigationLabel = 'Menu';
 
+    public static function canViewAny(): bool
+    {
+        // Admin dan Karir bisa melihat daftar pesanan
+        return auth()->user()->hasAnyRole(['admin', 'kasir']);
+    }
+
+    public static function canCreate(): bool
+    {
+        // Hanya Admin yang bisa membuat pesanan baru dari panel
+        return auth()->user()->hasRole('admin');
+    }
+
+    public static function canEdit($record): bool
+    {
+        // Hanya Admin yang bisa mengedit
+        return auth()->user()->hasRole('admin');
+    }
+
+    public static function canDelete($record): bool
+    {
+        // Hanya Admin yang bisa menghapus
+        return auth()->user()->hasRole('admin');
+    }
+
+
     public static function form(Form $form): Form
     {
         return $form

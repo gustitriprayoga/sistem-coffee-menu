@@ -70,10 +70,6 @@ class Cart extends Component
 
     public function submitOrder()
     {
-        // Pastikan $this->cart tidak kosong sebelum validasi cart.min
-        // Ini akan menyebabkan error jika keranjang kosong dan validasi dicoba.
-        // Seharusnya ini sudah ditangani oleh cart.min rule.
-
         $this->validate([
             'nama_pelanggan' => 'required|string|max:255',
             'telepon_pelanggan' => 'required|string|max:20',
@@ -96,8 +92,8 @@ class Cart extends Component
                 'telepon_pelanggan' => $this->telepon_pelanggan,
                 'alamat_pelanggan' => $this->alamat_pelanggan,
                 'metode_pembayaran' => $this->metode_pembayaran,
-                'total_harga' => $this->total, // SEKARANG KOLOM INI ADA DI DB
-                'status' => 'menunggu', // Default status sesuai enum di DB
+                'total_harga' => $this->total,
+                'status' => 'menunggu',
             ]);
 
             // Create DetailPesanan
@@ -106,8 +102,7 @@ class Cart extends Component
                     'pesanan_id' => $pesanan->id,
                     'menu_id' => $item['id'],
                     'kuantitas' => $item['quantity'],
-                    'harga' => $item['price'], // UBAH INI dari 'harga_satuan'
-                    // 'subtotal' => $item['price'] * $item['quantity'], // HAPUS INI jika tidak ada kolom subtotal di DB
+                    'harga' => $item['price'],
                 ]);
             }
 
@@ -121,21 +116,13 @@ class Cart extends Component
             session()->forget('cart');
             $this->dispatch('cartCleared');
 
-            // Show success notification using Filament's Notification
-            Notification::make()
-                ->title('Pesanan berhasil dibuat!')
-                ->success()
-                ->send();
-
-            // Optionally hide the cart after successful order
-            $this->showCart = false;
-
+            // BARIS KRUSIAL UNTUK REDIRECT INI
+            return redirect()->to(route('order.confirmation', ['pesananId' => $pesanan->id]));
         } catch (\Exception $e) {
-            // Ini akan memastikan error muncul di log atau di notifikasi
-            \Log::error("Error placing order: " . $e->getMessage()); // Log error ke file log Laravel
+            \Log::error("Error placing order: " . $e->getMessage());
             Notification::make()
                 ->title('Terjadi kesalahan saat membuat pesanan.')
-                ->body('Detail: ' . $e->getMessage()) // Tampilkan pesan error di frontend juga
+                ->body('Detail: ' . $e->getMessage())
                 ->danger()
                 ->send();
         }

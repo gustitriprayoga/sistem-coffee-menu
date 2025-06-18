@@ -22,7 +22,7 @@ class Pesanan extends Model
         'status',
     ];
 
-    public function details()
+    public function detail()
     {
         return $this->hasMany(DetailPesanan::class, 'pesanan_id');
     }
@@ -30,5 +30,10 @@ class Pesanan extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function details()
+    {
+        return $this->hasMany(DetailPesanan::class, 'pesanan_id'); // Pastikan 'pesanan_id' adalah nama kolom foreign key di detail_pesanans
     }
 }

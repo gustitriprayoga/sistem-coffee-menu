@@ -22,6 +22,13 @@ class SpatieRole extends Seeder
 
         $admin->assignRole(Role::firstOrCreate(['name' => 'admin']));
 
+        $kasir = User::create([
+            'name' => 'Kasir Cafe',
+            'email' => 'kasir@cafe.com',
+            'password' => bcrypt('kasir123'),
+        ]);
+        $kasir->assignRole(Role::firstOrCreate(['name' => 'kasir']));
+
         $user = User::create([
             'name' => 'Pelanggan Biasa',
             'email' => 'user@cafe.com',

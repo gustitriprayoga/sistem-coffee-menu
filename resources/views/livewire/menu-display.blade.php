@@ -12,10 +12,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         @foreach ($kategori->menus as $menu)
                             <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out relative">
-                                @if($menu->gambar) {{-- UBAH: Mengakses kolom 'gambar' dari Menu --}}
+                                @if($menu->gambar && file_exists(public_path('storage/' . $menu->gambar))) {{-- UBAH: Memeriksa keberadaan file gambar --}}
                                     <img src="{{ asset('storage/' . $menu->gambar) }}" alt="{{ $menu->nama }}" class="w-full h-48 object-cover">
                                 @else
-                                    <img src="https://via.placeholder.com/600x400?text=Tidak+Ada+Gambar" alt="{{ $menu->nama }}" class="w-full h-48 object-cover">
+                                    <img src="{{ asset('gambar/gambar-default.jpg') }}" alt="{{ $menu->nama }}" class="w-full h-48 object-cover">
                                 @endif
                                 <div class="p-6">
                                     <h4 class="text-xl font-semibold text-gray-800 mb-2">{{ $menu->nama }}</h4> {{-- UBAH: Mengakses kolom 'nama' dari Menu --}}

@@ -3,7 +3,7 @@
         <button wire:click="toggleCart"
             class="bg-amber-600 text-white p-4 rounded-full shadow-lg hover:bg-amber-700 transition duration-300 ease-in-out relative">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                {{-- UBAH BARIS PATH INI DENGAN YANG BARU --}}
+
                 <path
                     d="M3 1a1 1 0 00-1 1v12a1 1 0 001 1h14a1 1 0 001-1V2a1 1 0 00-1-1H3zm0 2h14v10H3V3zM6 15a1 1 0 100 2 1 1 0 000-2zm8 0a1 1 0 100 2 1 1 0 000-2z" />
             </svg>
@@ -74,8 +74,8 @@
                         <span>Rp{{ number_format($total, 0, ',', '.') }}</span>
                     </div>
 
-                    <p class="text-red-500 text-lg font-bold">DEBUG: Item di Keranjang: {{ count($cart) }}</p>
-                    <pre class="text-sm bg-gray-100 p-2">{{ json_encode($cart, JSON_PRETTY_PRINT) }}</pre>
+                    {{-- <p class="text-red-500 text-lg font-bold">DEBUG: Item di Keranjang: {{ count($cart) }}</p>
+                    <pre class="text-sm bg-gray-100 p-2">{{ json_encode($cart, JSON_PRETTY_PRINT) }}</pre> --}}
                     <form wire:submit.prevent="submitOrder">
                         <div class="mb-4">
                             <label for="nama_pelanggan" class="block text-sm font-medium text-gray-700 mb-1">Nama

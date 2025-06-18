@@ -40,7 +40,22 @@ class DetailRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('Detail Pesanan')
             ->columns([
-                Tables\Columns\TextColumn::make('Detail Pesanan'),
+                TextColumn::make('pesanan_id')
+                    ->label('ID Pesanan')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('menu_id')
+                    ->label('ID Menu')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('kuantitas')
+                    ->label('Kuantitas')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('harga')
+                    ->label('Harga')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //

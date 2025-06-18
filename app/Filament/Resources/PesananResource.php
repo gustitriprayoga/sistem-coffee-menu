@@ -14,6 +14,8 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 
@@ -22,8 +24,32 @@ class PesananResource extends Resource
     protected static ?string $model = Pesanan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
-    protected static ?string $navigationGroup = 'Manajemen Pesanan';
+    // protected static ?string $navigationGroup = 'Manajemen Pesanan';
     protected static ?string $navigationLabel = 'Pesanan Masuk';
+
+    public static function canViewAny(): bool
+    {
+        // Admin dan Karir bisa melihat daftar pesanan
+        return auth()->user()->hasAnyRole(['admin', 'kasir']);
+    }
+
+    public static function canCreate(): bool
+    {
+        // Hanya Admin yang bisa membuat pesanan baru dari panel
+        return auth()->user()->hasRole('admin');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        // Hanya Admin yang bisa mengedit
+        return auth()->user()->hasRole(['admin', 'kasir']);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        // Hanya Admin yang bisa menghapus
+        return auth()->user()->hasRole('admin');
+    }
 
 
     public static function form(Form $form): Form
@@ -74,14 +100,14 @@ class PesananResource extends Resource
                     ->label('Nama Pengguna')
                     ->searchable()
                     ->sortable()
-                    ->getStateUsing(fn (Pesanan $record) => $record->user?->name ?? 'Pelanggan Tanpa Login'),
+                    ->getStateUsing(fn(Pesanan $record) => $record->user?->name ?? 'Pelanggan Tanpa Login'),
                 Tables\Columns\TextColumn::make('nama_pelanggan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('telepon_pelanggan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('metode_pembayaran'),
                 Tables\Columns\TextColumn::make('bukti_pembayaran')
-                    ->getStateUsing(fn (Pesanan $record) => $record->bukti_pembayaran ? 'Tersedia' : 'Tidak Tersedia')
+                    ->getStateUsing(fn(Pesanan $record) => $record->bukti_pembayaran ? 'Tersedia' : 'Tidak Tersedia')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('created_at')

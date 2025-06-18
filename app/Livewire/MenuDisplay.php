@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\KategoriMenu;
 use App\Models\Menu;
 use Livewire\Attributes\On;
+// PASTIKAN BARIS INI ADA UNTUK FILAMENT NOTIFICATIONS
+use Filament\Notifications\Notification;
 
 class MenuDisplay extends Component
 {
@@ -15,7 +17,6 @@ class MenuDisplay extends Component
 
     public function mount()
     {
-        // Mengambil semua kategori beserta menu-menu terkaitnya.
         $this->kategoriMenus = KategoriMenu::with('menus')->get();
         $this->loadCartFromSession();
     }
@@ -27,14 +28,21 @@ class MenuDisplay extends Component
         } else {
             $this->cart[$menuId] = [
                 'id' => $menuId,
-                'name' => $menuName, // Menggunakan parameter menuName (dari kolom 'nama')
-                'price' => $menuPrice, // Menggunakan parameter menuPrice (dari kolom 'harga')
+                'name' => $menuName,
+                'price' => $menuPrice,
                 'quantity' => 1
             ];
         }
         $this->updateTotal();
         $this->saveCartToSession();
         $this->dispatch('cartUpdated');
+
+        // TAMBAHKAN KODE NOTIFIKASI INI
+        Notification::make()
+            ->title("'$menuName' berhasil ditambahkan ke keranjang!")
+            ->success()
+            ->duration(3000) // Notifikasi akan hilang setelah 3 detik
+            ->send();
     }
 
     public function removeFromCart($menuId)
@@ -44,6 +52,12 @@ class MenuDisplay extends Component
             $this->updateTotal();
             $this->saveCartToSession();
             $this->dispatch('cartUpdated');
+            // Opsional: notifikasi ketika item dihapus
+            Notification::make()
+                ->title('Item berhasil dihapus dari keranjang.')
+                ->warning()
+                ->duration(3000)
+                ->send();
         }
     }
 
@@ -58,6 +72,12 @@ class MenuDisplay extends Component
         $this->updateTotal();
         $this->saveCartToSession();
         $this->dispatch('cartUpdated');
+        // Opsional: notifikasi ketika kuantitas diupdate
+        Notification::make()
+            ->title('Kuantitas item diperbarui.')
+            ->info()
+            ->duration(2000)
+            ->send();
     }
 
     public function updateTotal()
@@ -82,6 +102,7 @@ class MenuDisplay extends Component
         $this->cart = [];
         $this->total = 0;
         session()->forget('cart');
+        // Anda juga bisa menambahkan notifikasi di sini setelah pesanan berhasil (jika perlu)
     }
 
     public function render()
