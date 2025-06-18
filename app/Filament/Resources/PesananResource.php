@@ -78,7 +78,7 @@ class PesananResource extends Resource
                     ->required(),
                 Forms\Components\FileUpload::make('bukti_pembayaran')
                     ->imageEditor()
-                    ->required()
+                    // ->required()
                     ->directory('bukti_pembayaran'),
                 Select::make('status')
                     ->options([

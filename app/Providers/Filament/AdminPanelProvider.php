@@ -21,6 +21,7 @@ use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugi
 use Filament\Navigation\NavigationGroup;
 use App\Filament\Pages\AdminDashboard;
 use App\Filament\Pages\KarirDashboard;
+use App\Filament\Pages\LaporanPenjualan;
 use App\Filament\Pages\PelangganDashboard;
 use App\Http\Middleware\RoleBasedRedirect;
 
@@ -44,13 +45,14 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Manajemen Pesanan',
                 'Manajemen Menu',
+                'Laporan',
                 'Manajemen Pengguna',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
-
+                LaporanPenjualan::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
