@@ -9,55 +9,71 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Columns\TextColumn; // Tambahkan ini
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\Summarizers\Sum;
 
 class DetailRelationManager extends RelationManager
 {
-    protected static string $relationship = 'details'; // Pastikan ini sesuai dengan nama relasi di model Pesanan
+    protected static string $relationship = 'details';
+    protected static ?string $title = 'Item Pesanan';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('menu.nama') // Mengambil nama menu dari relasi
-                    ->label('Menu')
-                    ->disabled(), // Tidak bisa diubah
+                Forms\Components\Select::make('menu_id')
+                    ->relationship('menu', 'nama')
+                    ->required()
+                    ->searchable()
+                    ->preload()
+                    ->label('Menu'),
                 Forms\Components\TextInput::make('kuantitas')
+                    ->required()
                     ->numeric()
-                    ->required(),
+                    ->default(1)
+                    ->minValue(1),
                 Forms\Components\TextInput::make('harga')
-                    ->label('Harga Satuan')
+                    ->required()
                     ->numeric()
                     ->prefix('Rp')
-                    ->readOnly(), // Harga satuan tidak bisa diubah dari sini
+                    ->readOnly()
+                    ->formatStateUsing(fn($state) => number_format($state, 0, ',', '.')),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('menu.nama') // Untuk judul record
+            ->recordTitleAttribute('menu.nama')
             ->columns([
                 TextColumn::make('menu.nama')
                     ->label('Menu')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('kuantitas')
+                    ->label('Kuantitas'),
                 TextColumn::make('harga')
                     ->label('Harga Satuan')
                     ->prefix('Rp')
                     ->numeric(decimalPlaces: 0, thousandsSeparator: '.', decimalSeparator: ','),
-                TextColumn::make('kuantitas')
-                    ->label('Kuantitas'),
-                TextColumn::make('subtotal') // Menampilkan subtotal yang dihitung
+                TextColumn::make('')
                     ->label('Subtotal')
-                    ->money('IDR') // Atau mata uang lain sesuai kebutuhan
-                    ->getStateUsing(fn ($record) => $record->kuantitas * $record->harga),
+                    ->money('IDR')
+                    ->getStateUsing(fn($record) => $record->kuantitas * $record->harga)
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $menu = \App\Models\Menu::find($data['menu_id']);
+                        if ($menu) {
+                            $data['harga'] = $menu->harga;
+                        }
+                        return $data;
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -69,6 +85,4 @@ class DetailRelationManager extends RelationManager
                 ]),
             ]);
     }
-
-
 }

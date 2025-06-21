@@ -166,7 +166,7 @@ class PesananResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Action::make('markAsProcessed')
                     ->label('Proses Pesanan')
-                    ->icon('eva-car-outline')
+                    ->icon('heroicon-c-gift')
                     ->color('primary')
                     ->visible(fn (Pesanan $record): bool => $record->status === 'menunggu')
                     ->action(function (Pesanan $record) {
