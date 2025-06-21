@@ -6,56 +6,52 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\TextColumn; // Tambahkan ini
 
 class DetailRelationManager extends RelationManager
 {
-    protected static string $relationship = 'detail';
-    protected static ?string $title = 'Detail Pesanan';
+    protected static string $relationship = 'details'; // Pastikan ini sesuai dengan nama relasi di model Pesanan
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('pesanan_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('menu_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\TextInput::make('menu.nama') // Mengambil nama menu dari relasi
+                    ->label('Menu')
+                    ->disabled(), // Tidak bisa diubah
                 Forms\Components\TextInput::make('kuantitas')
-                    ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->required(),
                 Forms\Components\TextInput::make('harga')
-                    ->required()
-                    ->numeric(),
+                    ->label('Harga Satuan')
+                    ->numeric()
+                    ->prefix('Rp')
+                    ->readOnly(), // Harga satuan tidak bisa diubah dari sini
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('Detail Pesanan')
+            ->recordTitleAttribute('menu.nama') // Untuk judul record
             ->columns([
-                TextColumn::make('pesanan_id')
-                    ->label('ID Pesanan')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('menu_id')
-                    ->label('ID Menu')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('kuantitas')
-                    ->label('Kuantitas')
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('menu.nama')
+                    ->label('Menu')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('harga')
-                    ->label('Harga')
-                    ->sortable()
-                    ->searchable(),
+                    ->label('Harga Satuan')
+                    ->prefix('Rp')
+                    ->numeric(decimalPlaces: 0, thousandsSeparator: '.', decimalSeparator: ','),
+                TextColumn::make('kuantitas')
+                    ->label('Kuantitas'),
+                TextColumn::make('subtotal') // Menampilkan subtotal yang dihitung
+                    ->label('Subtotal')
+                    ->money('IDR') // Atau mata uang lain sesuai kebutuhan
+                    ->getStateUsing(fn ($record) => $record->kuantitas * $record->harga),
             ])
             ->filters([
                 //
@@ -73,4 +69,6 @@ class DetailRelationManager extends RelationManager
                 ]),
             ]);
     }
+
+
 }

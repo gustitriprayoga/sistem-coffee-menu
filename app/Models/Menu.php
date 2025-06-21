@@ -23,4 +23,9 @@ class Menu extends Model
     {
         return $this->belongsTo(KategoriMenu::class, 'kategori_menu_id');
     }
+
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriMenu::class, 'kategori_menu_id');
+    }
 }

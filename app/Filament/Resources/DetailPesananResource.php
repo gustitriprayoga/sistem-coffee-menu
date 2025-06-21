@@ -26,7 +26,7 @@ class DetailPesananResource extends Resource
     public static function canViewAny(): bool
     {
         // Admin dan Karir bisa melihat daftar pesanan
-        return auth()->user()->hasAnyRole(['admin', 'kasir']);
+        return auth()->user()->hasAnyRole([ '']);
     }
 
     public static function canCreate(): bool
@@ -112,4 +112,6 @@ class DetailPesananResource extends Resource
             'edit' => Pages\EditDetailPesanan::route('/{record}/edit'),
         ];
     }
+
+
 }
