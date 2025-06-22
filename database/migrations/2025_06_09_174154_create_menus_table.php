@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama');
             $table->text('deskripsi')->nullable();
             $table->decimal('harga', 10, 2);
+            $table->decimal('stock')->default(0); // Menambahkan kolom stock
             $table->string('gambar')->nullable();
             $table->timestamps();
         });

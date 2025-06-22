@@ -10,6 +10,10 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
+    <link rel="stylesheet" href="{{ asset('css/filament/filament/app.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/filament/support/support.css') }}" />
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -36,48 +40,20 @@
     </style>
 </head>
 
-<body class="antialiased">
-    <div class="relative min-h-screen bg-white">
-        <header class="bg-amber-800 text-white p-6 shadow-md">
-            <div class="container mx-auto flex justify-between items-center">
-                <h1 class="text-3xl font-extrabold tracking-tight">Sederhana Coffee Shop</h1>
-                <nav>
-                </nav>
-            </div>
-        </header>
+<body>
+    {{-- Render komponen WelcomePage Livewire sebagai konten utama --}}
+    @livewire('welcome-page')
 
-        <section class="relative bg-cover bg-center h-[500px] flex items-center justify-center text-center text-white"
-            style="background-image: url('https://images.unsplash.com/photo-1511920170033-0c8a5fa810e8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
-            <div class="absolute inset-0 bg-black opacity-50"></div>
-            <div class="relative z-10 p-8">
-                <h2 class="text-5xl md:text-6xl font-bold leading-tight mb-4 animate-fade-in-down">Nikmati, Rasakan, dan
-                    Santai</h2>
-                <p class="text-xl md:text-2xl mb-8 animate-fade-in-up">Rasakan kopi terbaik dan hidangan lezat.</p>
-                <a href="#menu-section"
-                    class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 ease-in-out shadow-lg animate-fade-in-up">
-                    Lihat Menu Kami
-                </a>
-            </div>
-        </section>
-
-        <section id="menu-section" class="py-12 bg-gray-50">
-            @livewire('menu-display')
-        </section>
-
-        <footer class="bg-gray-800 text-white py-8">
-            <div class="container mx-auto text-center text-gray-400">
-                <p>&copy; {{ date('Y') }} Sederhana Coffee Shop. Semua Hak Dilindungi.</p>
-                <p>Didesain dengan ❤️ oleh Nama Anda</p>
-            </div>
-        </footer>
-    </div>
-
+    {{-- Render komponen Cart Livewire di luar WelcomePage --}}
+    {{-- Ini penting agar Cart bisa muncul sebagai floating element --}}
     @livewire('cart')
 
     @livewireScripts
+
+    <script src="{{ asset('js/filament/filament/app.js') }}"></script>
+    <script src="{{ asset('js/filament/notifications/notifications.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // PERBAIKAN: Gunakan document.querySelectorAll untuk memilih semua elemen dan memungkinkan forEach
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();

@@ -7,12 +7,11 @@ use App\Models\Pesanan;
 use App\Models\DetailPesanan;
 use Livewire\Attributes\On;
 use Filament\Notifications\Notification;
-// IMPORT TRAIT INI UNTUK UPLOAD FILE
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
 
 class Cart extends Component
 {
-    // GUNAKAN TRAIT INI
     use WithFileUploads;
 
     public $cart = [];
@@ -23,8 +22,7 @@ class Cart extends Component
     public $metode_pembayaran = 'cod';
     public $showCart = false;
 
-    // Properti baru untuk upload file bukti pembayaran
-    public $buktiPembayaranFile; // <-- PROPERTI BARU
+    public $buktiPembayaranFile;
 
     public $bankTransferInfo = [
         'nama_bank' => 'Bank ABC',
@@ -40,6 +38,12 @@ class Cart extends Component
     public function mount()
     {
         $this->loadCartFromSession();
+        if (Auth::check()) {
+            $user = Auth::user();
+            $this->nama_pelanggan = $user->name;
+            $this->telepon_pelanggan = $user->phone ?? '';
+            $this->alamat_pelanggan = $user->address ?? '';
+        }
     }
 
     #[On('cartUpdated')]
@@ -52,21 +56,53 @@ class Cart extends Component
     public function removeFromCart($menuId)
     {
         if (isset($this->cart[$menuId])) {
+            $removedQuantity = $this->cart[$menuId]['quantity'];
             unset($this->cart[$menuId]);
             $this->updateTotal();
             $this->saveCartToSession();
             $this->dispatch('cartUpdated');
+
+            $menuItem = \App\Models\Menu::find($menuId); // Perbaiki namespace jika perlu
+            if ($menuItem) {
+                $menuItem->stock += $removedQuantity;
+                $menuItem->save();
+            }
         }
     }
 
-    public function updateQuantity($menuId, $quantity)
+    public function updateQuantity($menuId, $newQuantity)
     {
-        $quantity = (int) $quantity;
-        if (isset($this->cart[$menuId]) && $quantity > 0) {
-            $this->cart[$menuId]['quantity'] = $quantity;
-        } elseif ($quantity <= 0) {
-            unset($this->cart[$menuId]);
+        $newQuantity = (int) $newQuantity;
+        $oldQuantity = $this->cart[$menuId]['quantity'] ?? 0;
+        $quantityChange = $newQuantity - $oldQuantity;
+
+        $menuItem = \App\Models\Menu::find($menuId); // Perbaiki namespace jika perlu
+
+        if (!$menuItem) {
+            Notification::make()->title('Produk tidak ditemukan.')->danger()->send();
+            return;
         }
+
+        if ($newQuantity <= 0) {
+            $this->removeFromCart($menuId);
+            return;
+        }
+
+        if ($quantityChange > 0 && $menuItem->stock < $quantityChange) {
+            Notification::make()
+                ->title("Stok '$menuItem->nama' tidak mencukupi untuk menambah kuantitas.")
+                ->danger()
+                ->send();
+            $this->cart[$menuId]['quantity'] = $oldQuantity;
+            $this->saveCartToSession();
+            $this->updateTotal();
+            return;
+        }
+
+        $menuItem->stock -= $quantityChange;
+        $menuItem->save();
+
+        $this->cart[$menuId]['quantity'] = $newQuantity;
         $this->updateTotal();
         $this->saveCartToSession();
         $this->dispatch('cartUpdated');
@@ -82,9 +118,26 @@ class Cart extends Component
         session(['cart' => $this->cart]);
     }
 
-    public function toggleCart()
+    protected function loadCartFromSession()
     {
-        $this->showCart = !$this->showCart;
+        $this->cart = session('cart', []);
+        $this->updateTotal();
+    }
+
+    #[On('cartCleared')]
+    public function handleCartCleared()
+    {
+        foreach ($this->cart as $item) {
+            $menuItem = \App\Models\Menu::find($item['id']); // Perbaiki namespace jika perlu
+            if ($menuItem) {
+                $menuItem->stock += $item['quantity'];
+                $menuItem->save();
+            }
+        }
+
+        $this->cart = [];
+        $this->total = 0;
+        session()->forget('cart');
     }
 
     public function submitOrder()
@@ -97,13 +150,11 @@ class Cart extends Component
             'cart' => 'required|array|min:1',
         ];
 
-        // --- ATURAN VALIDASI KONDISIONAL UNTUK BUKTI PEMBAYARAN ---
         if (in_array($this->metode_pembayaran, ['transfer_bank', 'e_wallet'])) {
-            $rules['buktiPembayaranFile'] = 'required|image|max:2048'; // Wajib, berupa gambar, max 2MB (2048 KB)
+            $rules['buktiPembayaranFile'] = 'required|image|max:2048';
         } else {
-            $rules['buktiPembayaranFile'] = 'nullable|image|max:2048'; // Boleh kosong jika COD
+            $rules['buktiPembayaranFile'] = 'nullable|image|max:2048';
         }
-        // --- AKHIR ATURAN VALIDASI KONDISIONAL ---
 
         $this->validate($rules, [
             'nama_pelanggan.required' => 'Nama pelanggan wajib diisi.',
@@ -119,20 +170,19 @@ class Cart extends Component
 
         try {
             $buktiPembayaranPath = null;
-            // --- LOGIKA UPLOAD DAN SIMPAN FILE ---
             if ($this->buktiPembayaranFile) {
                 $buktiPembayaranPath = $this->buktiPembayaranFile->store('bukti_pembayaran', 'public');
             }
-            // --- AKHIR LOGIKA UPLOAD DAN SIMPAN FILE ---
 
             $pesanan = Pesanan::create([
+                'user_id' => Auth::id(),
                 'nama_pelanggan' => $this->nama_pelanggan,
                 'telepon_pelanggan' => $this->telepon_pelanggan,
                 'alamat_pelanggan' => $this->alamat_pelanggan,
                 'metode_pembayaran' => $this->metode_pembayaran,
                 'total_harga' => $this->total,
                 'status' => 'menunggu',
-                'bukti_pembayaran' => $buktiPembayaranPath, // <-- SIMPAN PATH FILE DI SINI
+                'bukti_pembayaran' => $buktiPembayaranPath,
             ]);
 
             foreach ($this->cart as $item) {
@@ -144,17 +194,16 @@ class Cart extends Component
                 ]);
             }
 
-            // Clear the cart and reset properties
             $this->cart = [];
             $this->total = 0;
             $this->nama_pelanggan = '';
             $this->telepon_pelanggan = '';
             $this->alamat_pelanggan = '';
             $this->metode_pembayaran = 'cod';
+            $this->buktiPembayaranFile = null;
             session()->forget('cart');
             $this->dispatch('cartCleared');
 
-            // Redirect to the order confirmation page
             return redirect()->to(route('order.confirmation', ['pesananId' => $pesanan->id]));
 
         } catch (\Exception $e) {
