@@ -61,6 +61,19 @@
         </section>
 
         <section id="menu-section" class="py-12 bg-gray-50">
+            <div class="container mx-auto px-4 mb-8 text-center">
+                <h3 class="text-2xl font-semibold text-gray-700 mb-4">Kategori Menu Kami </h3>
+                {{-- <button wire:click="$dispatch('filterByCategory', { categoryId: null })"
+                    class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-full mr-2 mb-2 transition duration-300 ease-in-out">
+                    Semua
+                </button> --}}
+                @foreach (\App\Models\KategoriMenu::all() as $kategori)
+                    <button wire:click="$dispatch('filterByCategory', { categoryId: {{ $kategori->id }} })"
+                        class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-full mr-2 mb-2 transition duration-300 ease-in-out">
+                        {{ $kategori->nama }}
+                    </button>
+                @endforeach
+            </div>
             @livewire('menu-display')
         </section>
 
