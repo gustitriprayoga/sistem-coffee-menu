@@ -3,7 +3,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\OrderConfirmation;
-use App\Livewire\WelcomePage; // <-- TAMBAHKAN INI
 
 
 /*
@@ -18,7 +17,10 @@ use App\Livewire\WelcomePage; // <-- TAMBAHKAN INI
 */
 
 
-Route::get('/', WelcomePage::class);
+Route::get('/', function () {
+    return view('welcome');
+});
+
 
 Route::get('/order-confirmation/{pesananId}', OrderConfirmation::class)
     ->name('order.confirmation'); // Pastikan namanya persis 'order.confirmation'
