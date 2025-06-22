@@ -47,7 +47,6 @@
     {{-- Render komponen Cart Livewire di luar WelcomePage --}}
     {{-- Ini penting agar Cart bisa muncul sebagai floating element --}}
     @livewire('cart')
-    @dd('Cart component loaded')
 
     {{-- Render komponen OrderConfirmation Livewire --}}
 

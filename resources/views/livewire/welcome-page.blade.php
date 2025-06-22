@@ -6,18 +6,7 @@
             <nav class="space-x-4">
                 <a href="/" class="hover:text-gray-200">Beranda</a>
                 <a href="#menu-section" class="hover:text-gray-200">Menu</a>
-                {{-- Bagian Login/Register/Riwayat Pembelian/Logout bisa ditambahkan kembali di sini --}}
-                {{-- Contoh jika menggunakan autentikasi Laravel Breeze/Jetstream: --}}
-                {{-- @auth
-                    <a href="{{ route('purchase.history') }}" class="hover:text-gray-200">Riwayat Pembelian</a>
-                    <a href="{{ route('filament.admin.auth.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="hover:text-gray-200">Logout</a>
-                    <form id="logout-form" action="{{ route('filament.admin.auth.logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="hover:text-gray-200">Login</a>
-                    <a href="{{ route('register') }}" class="hover:text-gray-200">Register</a>
-                @endauth --}}
+
             </nav>
         </div>
     </header>
@@ -70,6 +59,8 @@
         {{-- Meneruskan properti filter ke komponen menu-display --}}
         @livewire('menu-display', ['search' => $search, 'selectedCategory' => $selectedCategory])
     </section>
+
+    {{-- @livewire('cart') --}}
 
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto text-center text-gray-400">
