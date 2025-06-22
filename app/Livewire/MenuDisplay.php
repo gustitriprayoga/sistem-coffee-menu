@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Menu; // Hanya model Menu yang perlu di sini, KategoriMenu dimuat di WelcomePage
+use App\Models\Menu; // Hanya model Menu yang perlu di sini
 use Livewire\Attributes\On;
 use Filament\Notifications\Notification;
 
@@ -26,7 +26,6 @@ class MenuDisplay extends Component
     {
         $this->search = $search;
         $this->selectedCategory = $selectedCategory;
-        // Kategori menu tidak perlu dimuat di sini, karena sudah dimuat WelcomePage
         $this->loadCartFromSession();
     }
 
@@ -35,12 +34,10 @@ class MenuDisplay extends Component
     {
         $query = Menu::query();
 
-        // Filter berdasarkan kategori
         if ($this->selectedCategory !== 'all' && !is_null($this->selectedCategory)) {
             $query->where('kategori_menu_id', $this->selectedCategory);
         }
 
-        // Filter berdasarkan query pencarian
         if (!empty($this->search)) {
             $query->where(function ($q) {
                 $q->where('nama', 'like', '%' . $this->search . '%')
@@ -48,7 +45,7 @@ class MenuDisplay extends Component
             });
         }
 
-        // Filter: hanya tampilkan jika stok > 0 (asumsi kolom 'stock' sudah ada di DB)
+        // Filter: hanya tampilkan jika stok > 0 (asumsi kolom 'stock' sudah ada)
         $query->where('stock', '>', 0);
 
         return $query->get();
@@ -66,7 +63,7 @@ class MenuDisplay extends Component
         }
     }
 
-    public function closeProductModal() // <-- METODE INI SEKARANG ADA
+    public function closeProductModal()
     {
         $this->showProductModal = false;
         $this->selectedMenu = null;
@@ -105,7 +102,7 @@ class MenuDisplay extends Component
             }
             $this->updateTotal();
             $this->saveCartToSession();
-            $this->dispatch('cartUpdated'); // Beritahu Cart component
+            $this->dispatch('cartUpdated');
 
             // Kurangi stok di database
             $menuItem->stock -= $quantity;
@@ -212,7 +209,6 @@ class MenuDisplay extends Component
     #[On('cartCleared')]
     public function handleCartCleared()
     {
-        // Kembalikan stok dari item di keranjang jika pesanan dibersihkan/dibatalkan
         foreach ($this->cart as $item) {
             $menuItem = Menu::find($item['id']);
             if ($menuItem) {

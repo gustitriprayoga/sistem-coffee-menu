@@ -3,35 +3,39 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\KategoriMenu;
-use Livewire\Attributes\Url;
-use Illuminate\Support\Facades\Auth;
+use App\Models\KategoriMenu; // Import model KategoriMenu
+use Livewire\Attributes\Url; // Untuk sinkronisasi URL di komponen induk
+use Illuminate\Support\Facades\Auth; // Jika perlu untuk navigasi header
 
 class WelcomePage extends Component
 {
+    // Properti untuk filter/pencarian, disinkronkan dengan URL
     #[Url]
     public $search = '';
     #[Url]
-    public $selectedCategory = 'all';
+    public $selectedCategory = 'all'; // Default ke 'all'
 
-    public $kategoriMenus;
+    public $kategoriMenus; // Kategori menu akan dimuat di sini
 
     public function mount()
     {
-        $this->kategoriMenus = KategoriMenu::all();
+        $this->kategoriMenus = KategoriMenu::all(); // Muat semua kategori
+        // Set kategori default ke 'all' jika URL category invalid
         if (!$this->kategoriMenus->pluck('id')->contains($this->selectedCategory) && $this->selectedCategory !== 'all') {
             $this->selectedCategory = 'all';
         }
     }
 
+    // Metode untuk menerapkan filter kategori
     public function selectCategory($categoryId)
     {
         $this->selectedCategory = ($categoryId === 'all') ? 'all' : (int) $categoryId;
     }
 
+    // Metode untuk memperbarui filter pencarian
     public function updatedSearch()
     {
-        // Livewire akan otomatis memperbarui komponen anak
+        // Livewire secara otomatis akan memperbarui komponen anak
     }
 
     public function render()

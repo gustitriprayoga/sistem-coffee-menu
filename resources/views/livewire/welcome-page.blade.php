@@ -1,4 +1,4 @@
-<div> {{-- INI ADALAH SATU-SATUNYA ROOT ELEMENT --}}
+<div> {{-- INI ADALAH SATU-SATUNYA ROOT ELEMENT UNTUK KOMPONEN LIVEWIRE INI --}}
 
     <header class="bg-amber-800 text-white p-6 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
@@ -6,8 +6,7 @@
             <nav class="space-x-4">
                 <a href="/" class="hover:text-gray-200">Beranda</a>
                 <a href="#menu-section" class="hover:text-gray-200">Menu</a>
-                {{-- Bagian Login/Register/Riwayat Pembelian/Logout --}}
-                {{-- Anda dapat menambahkannya kembali di sini jika diperlukan, sesuai dengan kebutuhan autentikasi --}}
+                {{-- Bagian Login/Register/Riwayat Pembelian/Logout bisa ditambahkan kembali di sini --}}
                 {{-- Contoh jika menggunakan autentikasi Laravel Breeze/Jetstream: --}}
                 {{-- @auth
                     <a href="{{ route('purchase.history') }}" class="hover:text-gray-200">Riwayat Pembelian</a>
@@ -78,4 +77,4 @@
             <p>Didesain dengan ❤️ oleh Nama Anda</p>
         </div>
     </footer>
-</div> {{-- AKHIR DARI SATU ROOT ELEMENT --}}
+</div>

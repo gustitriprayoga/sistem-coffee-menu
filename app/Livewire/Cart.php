@@ -9,6 +9,7 @@ use Livewire\Attributes\On;
 use Filament\Notifications\Notification;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Menu; // <-- TAMBAHKAN INI UNTUK MENGGUNAKAN MODEL MENU
 
 class Cart extends Component
 {
@@ -62,7 +63,7 @@ class Cart extends Component
             $this->saveCartToSession();
             $this->dispatch('cartUpdated');
 
-            $menuItem = \App\Models\Menu::find($menuId); // Perbaiki namespace jika perlu
+            $menuItem = Menu::find($menuId); // <-- PASTIKAN INI TIDAK ADA BACKSLASH
             if ($menuItem) {
                 $menuItem->stock += $removedQuantity;
                 $menuItem->save();
@@ -76,7 +77,7 @@ class Cart extends Component
         $oldQuantity = $this->cart[$menuId]['quantity'] ?? 0;
         $quantityChange = $newQuantity - $oldQuantity;
 
-        $menuItem = \App\Models\Menu::find($menuId); // Perbaiki namespace jika perlu
+        $menuItem = Menu::find($menuId); // <-- PASTIKAN INI TIDAK ADA BACKSLASH
 
         if (!$menuItem) {
             Notification::make()->title('Produk tidak ditemukan.')->danger()->send();
@@ -128,7 +129,7 @@ class Cart extends Component
     public function handleCartCleared()
     {
         foreach ($this->cart as $item) {
-            $menuItem = \App\Models\Menu::find($item['id']); // Perbaiki namespace jika perlu
+            $menuItem = Menu::find($item['id']); // <-- PASTIKAN INI TIDAK ADA BACKSLASH
             if ($menuItem) {
                 $menuItem->stock += $item['quantity'];
                 $menuItem->save();
@@ -205,7 +206,6 @@ class Cart extends Component
             $this->dispatch('cartCleared');
 
             return redirect()->to(route('order.confirmation', ['pesananId' => $pesanan->id]));
-
         } catch (\Exception $e) {
             \Log::error("Error placing order: " . $e->getMessage());
             Notification::make()
