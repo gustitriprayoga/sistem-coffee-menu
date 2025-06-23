@@ -27,12 +27,12 @@
                                     <div class="flex items-center justify-between mb-4">
                                         <span
                                             class="text-2xl font-bold text-amber-800">Rp{{ number_format($menu->harga, 0, ',', '.') }}</span>
-                                        <span class="text-md text-gray-500">Stok: {{ $menu->stock }}</span>
+                                        <span class="text-md text-gray-500">Stok tersedia: {{ number_format($menu->stock, 0, ',', '.') }}</span>
                                     </div>
-                                    <button 
-                                        wire:click="addToCart({{ $menu->id }}, '{{ $menu->nama }}', {{ (float) $menu->harga }})" 
-                                        class="w-full bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition duration-300 ease-in-out flex items-center justify-center space-x-2 
-                                        @if ($menu->stock <= 0) opacity-50 cursor-not-allowed @endif" 
+                                    <button
+                                        wire:click="addToCart({{ $menu->id }}, '{{ $menu->nama }}', {{ (float) $menu->harga }})"
+                                        class="w-full bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition duration-300 ease-in-out flex items-center justify-center space-x-2
+                                        @if ($menu->stock <= 0) opacity-50 cursor-not-allowed @endif"
                                         @if ($menu->stock <= 0) disabled @endif>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                             fill="currentColor">
