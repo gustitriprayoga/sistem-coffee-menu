@@ -18,7 +18,7 @@ class MenuSeeder extends Seeder
             'harga' => 10000,
             'deskripsi' => 'Indomie Rebus adalah mie instan yang direbus dengan bumbu khas Indonesia.',
             'kategori_menu_id' => 1,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 22, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -27,7 +27,7 @@ class MenuSeeder extends Seeder
             'harga' => 10000,
             'deskripsi' => 'Indomie Rebus Goreng adalah mie instan yang digoreng dengan bumbu khas Indonesia.',
             'kategori_menu_id' => 1,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 45, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -36,7 +36,7 @@ class MenuSeeder extends Seeder
             'harga' => 8000,
             'deskripsi' => 'Pop Mie adalah mie instan yang siap disajikan dengan bumbu lezat.',
             'kategori_menu_id' => 1,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 12, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -45,7 +45,7 @@ class MenuSeeder extends Seeder
             'harga' => 10000,
             'deskripsi' => 'Pisang Krispy Lumer adalah pisang yang digoreng dengan tepung krispy yang lezat.',
             'kategori_menu_id' => 1,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 45, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -54,7 +54,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Sosis atau Nugget adalah makanan ringan yang digoreng dengan tepung krispy.',
             'kategori_menu_id' => 1,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 12, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -63,7 +63,7 @@ class MenuSeeder extends Seeder
             'harga' => 8000,
             'deskripsi' => 'Soda Hohe adalah minuman soda yang menyegarkan.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 11, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -72,7 +72,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Extrajoss adalah minuman energi yang menyegarkan.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 44, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -81,7 +81,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Kukubima adalah minuman energi yang menyegarkan.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 23, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -90,7 +90,7 @@ class MenuSeeder extends Seeder
             'harga' => 7000,
             'deskripsi' => 'Gingseng adalah minuman herbal yang menyehatkan.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 55, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -99,7 +99,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Susu adalah minuman sehat yang kaya akan kalsium.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 22, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -108,7 +108,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Teh Manis adalah minuman teh yang manis dan menyegarkan.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 31, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -126,7 +126,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Beng Beng adalah minuman cokelat yang lezat dan menyegarkan.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 23, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -135,7 +135,7 @@ class MenuSeeder extends Seeder
             'harga' => 7000,
             'deskripsi' => 'Hilo adalah minuman susu yang kaya akan nutrisi.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 22, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -144,7 +144,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Top Cappuccino adalah minuman kopi cappuccino yang lezat.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 11, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -153,7 +153,7 @@ class MenuSeeder extends Seeder
             'harga' => 7000,
             'deskripsi' => 'Top Gula Aren adalah minuman kopi dengan gula aren yang lezat.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 53, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -162,7 +162,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Luwak White Coffee adalah minuman kopi yang terbuat dari biji kopi luwak yang berkualitas tinggi.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 3, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -171,7 +171,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Nutrisari adalah minuman serbuk yang kaya akan vitamin dan nutrisi.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 1, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -180,7 +180,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Nescafe adalah minuman kopi instan yang lezat dan menyegarkan.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 2, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
@@ -189,7 +189,7 @@ class MenuSeeder extends Seeder
             'harga' => 5000,
             'deskripsi' => 'Kopi Kapal Api adalah minuman kopi yang terbuat dari biji kopi berkualitas tinggi.',
             'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
+            'stock' => 3, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
     }
