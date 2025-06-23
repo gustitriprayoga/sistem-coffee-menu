@@ -71,6 +71,12 @@ class MenuResource extends Resource
                     ->required()
                     ->label('Harga')
                     ->numeric(),
+                Forms\Components\TextInput::make('stock')
+                    ->required()
+                    ->formatStateUsing(fn ($state) => number_format($state, 0, ',', '.'))
+                    ->label('Stok')
+                    ->numeric()
+                    ->default(0),
                 Forms\Components\FileUpload::make('gambar')
                     ->imageEditor()
                     ->required()
@@ -96,6 +102,10 @@ class MenuResource extends Resource
                     ->html()
                     ->formatStateUsing(fn ($state) => $state ? '<img src="' . asset('storage/' . $state) . '" alt="Menu Image" class="w-16 h-16 object-cover">' : 'No Image')
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('stock')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

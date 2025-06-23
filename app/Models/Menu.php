@@ -17,6 +17,7 @@ class Menu extends Model
         'deskripsi', // Ubah dari 'deskripsi_menu' menjadi 'deskripsi'
         'harga', // Ini sudah benar
         'gambar', // Ubah dari 'foto_menu' menjadi 'gambar'
+        'stock', // Menambahkan kolom stock
     ];
 
     public function kategoriMenu()
