@@ -93,7 +93,7 @@ class Cart extends Component
             'nama_pelanggan' => 'required|string|max:255',
             'telepon_pelanggan' => 'required|string|max:20',
             'alamat_pelanggan' => 'required|string|max:500',
-            'metode_pembayaran' => 'required|in:cod,transfer_bank,e_wallet',
+            'metode_pembayaran' => 'required|in:cod,transfer_bank,e_wallet,bayar_di_tempat',
             'cart' => 'required|array|min:1',
         ];
 

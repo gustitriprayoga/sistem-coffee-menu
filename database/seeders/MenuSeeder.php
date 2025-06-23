@@ -14,57 +14,183 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         Menu::create([
-            'nama' => 'Nasi Goreng',
-            'harga' => 15000,
-            'deskripsi' => 'Nasi goreng spesial dengan telur dan ayam',
+            'nama' => 'Indomie Rebus',
+            'harga' => 10000,
+            'deskripsi' => 'Indomie Rebus adalah mie instan yang direbus dengan bumbu khas Indonesia.',
             'kategori_menu_id' => 1,
             'stock' => 100, // Menambahkan stok
             'gambar' => 'nasi_goreng.jpg',
         ]);
 
         Menu::create([
-            'nama' => 'Ayam Penyet',
-            'harga' => 20000,
-            'deskripsi' => 'Ayam goreng dengan sambal khas',
+            'nama' => 'Indomie Rebus Goreng',
+            'harga' => 10000,
+            'deskripsi' => 'Indomie Rebus Goreng adalah mie instan yang digoreng dengan bumbu khas Indonesia.',
             'kategori_menu_id' => 1,
             'stock' => 100, // Menambahkan stok
-            'gambar' => 'ayam_penyet.jpg',
+            'gambar' => 'nasi_goreng.jpg',
         ]);
 
         Menu::create([
-            'nama' => 'Es Teh Manis',
-            'harga' => 5000,
-            'deskripsi' => 'Minuman teh manis segar',
-            'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
-            'gambar' => 'es_teh_manis.jpg',
-        ]);
-
-        Menu::create([
-            'nama' => 'Kopi Susu',
-            'harga' => 10000,
-            'deskripsi' => 'Kopi dengan susu kental manis',
-            'kategori_menu_id' => 2,
-            'stock' => 100, // Menambahkan stok
-            'gambar' => 'kopi_susu.jpg',
-        ]);
-
-        Menu::create([
-            'nama' => 'Keripik Singkong',
+            'nama' => 'Pop Mie',
             'harga' => 8000,
-            'deskripsi' => 'Keripik singkong renyah',
-            'kategori_menu_id' => 3,
+            'deskripsi' => 'Pop Mie adalah mie instan yang siap disajikan dengan bumbu lezat.',
+            'kategori_menu_id' => 1,
             'stock' => 100, // Menambahkan stok
-            'gambar' => 'keripik_singkong.jpg',
+            'gambar' => 'nasi_goreng.jpg',
         ]);
 
         Menu::create([
-            'nama' => 'Pisang Goreng',
-            'harga' => 7000,
-            'deskripsi' => 'Pisang goreng manis dan renyah',
-            'kategori_menu_id' => 3,
+            'nama' => 'Pisang Krispy Lumer',
+            'harga' => 10000,
+            'deskripsi' => 'Pisang Krispy Lumer adalah pisang yang digoreng dengan tepung krispy yang lezat.',
+            'kategori_menu_id' => 1,
             'stock' => 100, // Menambahkan stok
-            'gambar' => 'pisang_goreng.jpg',
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Sosis/Nugget',
+            'harga' => 5000,
+            'deskripsi' => 'Sosis atau Nugget adalah makanan ringan yang digoreng dengan tepung krispy.',
+            'kategori_menu_id' => 1,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Soda Hohe',
+            'harga' => 8000,
+            'deskripsi' => 'Soda Hohe adalah minuman soda yang menyegarkan.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'extrajoss/extrajoss susu',
+            'harga' => 5000,
+            'deskripsi' => 'Extrajoss adalah minuman energi yang menyegarkan.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Kukubima/Kukubima Susu',
+            'harga' => 5000,
+            'deskripsi' => 'Kukubima adalah minuman energi yang menyegarkan.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Gingseng',
+            'harga' => 7000,
+            'deskripsi' => 'Gingseng adalah minuman herbal yang menyehatkan.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Susu',
+            'harga' => 5000,
+            'deskripsi' => 'Susu adalah minuman sehat yang kaya akan kalsium.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Teh',
+            'harga' => 5000,
+            'deskripsi' => 'Teh Manis adalah minuman teh yang manis dan menyegarkan.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Chocolatos',
+            'harga' => 7000,
+            'deskripsi' => 'Chocolatos adalah minuman cokelat yang lezat dan menyegarkan.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Beng Beng',
+            'harga' => 5000,
+            'deskripsi' => 'Beng Beng adalah minuman cokelat yang lezat dan menyegarkan.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Hilo',
+            'harga' => 7000,
+            'deskripsi' => 'Hilo adalah minuman susu yang kaya akan nutrisi.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Top Cappuccino',
+            'harga' => 5000,
+            'deskripsi' => 'Top Cappuccino adalah minuman kopi cappuccino yang lezat.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Top Gula Aren',
+            'harga' => 7000,
+            'deskripsi' => 'Top Gula Aren adalah minuman kopi dengan gula aren yang lezat.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Luwak White Coffee',
+            'harga' => 5000,
+            'deskripsi' => 'Luwak White Coffee adalah minuman kopi yang terbuat dari biji kopi luwak yang berkualitas tinggi.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Nutrisari / Nutrisari Susu',
+            'harga' => 5000,
+            'deskripsi' => 'Nutrisari adalah minuman serbuk yang kaya akan vitamin dan nutrisi.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Nescafe',
+            'harga' => 5000,
+            'deskripsi' => 'Nescafe adalah minuman kopi instan yang lezat dan menyegarkan.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
+        ]);
+
+        Menu::create([
+            'nama' => 'Kopi Kapal Api',
+            'harga' => 5000,
+            'deskripsi' => 'Kopi Kapal Api adalah minuman kopi yang terbuat dari biji kopi berkualitas tinggi.',
+            'kategori_menu_id' => 2,
+            'stock' => 100, // Menambahkan stok
+            'gambar' => 'nasi_goreng.jpg',
         ]);
     }
 }

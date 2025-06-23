@@ -116,6 +116,7 @@
                                 <select id="metode_pembayaran" wire:model.live="metode_pembayaran"
                                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-amber-500 focus:ring-amber-500 @error('metode_pembayaran') border-red-500 @enderror">
                                     <option value="cod">Cash On Delivery (COD)</option>
+                                    <option value="bayar_di_tempat">Bayar Di Tempat</option>
                                     <option value="transfer_bank">Transfer Bank</option>
                                     <option value="e_wallet">E-Wallet</option>
                                 </select>

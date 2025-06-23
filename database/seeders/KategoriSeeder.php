@@ -19,8 +19,6 @@ class KategoriSeeder extends Seeder
         KategoriMenu::create([
             'nama' => 'Minuman',
         ]);
-        KategoriMenu::create([
-            'nama' => 'Snack',
-        ]);
+
     }
 }

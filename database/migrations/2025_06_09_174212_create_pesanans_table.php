@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_pelanggan');
             $table->string('telepon_pelanggan');
             $table->text('alamat_pelanggan');
-            $table->enum('metode_pembayaran', ['cod', 'transfer_bank', 'e_wallet']);
+            $table->enum('metode_pembayaran', ['cod', 'transfer_bank', 'e_wallet','bayar_di_tempat'])->default('cod');
             $table->string('bukti_pembayaran')->nullable();
             $table->enum('status', ['menunggu', 'diproses', 'selesai', 'dibatalkan'])->default('menunggu');
             $table->timestamps();
