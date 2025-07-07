@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             SpatieRole::class,
             KategoriSeeder::class,
             MenuSeeder::class,
+            PesananSeeder::class,
             // UserSeeder::class,
             // PesananSeeder::class,
             // DetailPesananSeeder::class,

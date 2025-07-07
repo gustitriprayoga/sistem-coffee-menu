@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use Filament\Pages\Page;
 use App\Models\Pesanan;
 use App\Models\DetailPesanan;
+use App\Models\Menu; // Pastikan ini diimport untuk relasi
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Filament\Notifications\Notification;
@@ -12,7 +13,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
-use Filament\Forms\Components\Select; // Pastikan ini diimport
+use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Auth;
 
 class LaporanPenjualan extends Page implements HasForms
@@ -61,7 +62,7 @@ class LaporanPenjualan extends Page implements HasForms
                         ->default(fn() => Carbon::now()->endOfMonth()->toDateString())
                         ->reactive()
                         ->afterStateUpdated(fn() => $this->generateReport()),
-                    Select::make('filterType') // Gunakan Select dari Filament Forms
+                    Select::make('filterType')
                         ->label('Tipe Laporan')
                         ->options([
                             'daily' => 'Harian',
@@ -82,7 +83,6 @@ class LaporanPenjualan extends Page implements HasForms
 
     protected function updateDateRange(): void
     {
-        // Logika ini akan memastikan tanggal default sesuai dengan filterType
         switch ($this->filterType) {
             case 'daily':
                 $this->startDate = Carbon::now()->startOfDay()->toDateString();
@@ -120,10 +120,7 @@ class LaporanPenjualan extends Page implements HasForms
             }
 
             // --- Bagian Laporan Keuangan (Total Penjualan, Jumlah Pesanan, Keuntungan) ---
-            // Total Penjualan akan tetap sama, diambil dari total_harga di tabel pesanan
             $this->totalPenjualan = Pesanan::whereBetween('created_at', [$startDate, $endDate])->sum('total_harga');
-
-            // Jumlah Pesanan
             $this->jumlahPesanan = Pesanan::whereBetween('created_at', [$startDate, $endDate])->count();
 
             // Total Keuntungan: Mengambil dari total_harga pada detail_pesanans
@@ -131,7 +128,7 @@ class LaporanPenjualan extends Page implements HasForms
             $this->totalKeuntungan = DetailPesanan::whereHas('pesanan', function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('created_at', [$startDate, $endDate]);
             })
-                ->select(DB::raw('SUM(harga * kuantitas) as total_profit')) // Menghitung total harga jual dari detail pesanan
+                ->select(DB::raw('SUM(harga * kuantitas) as total_profit'))
                 ->first()
                 ->total_profit ?? 0;
 
@@ -146,7 +143,7 @@ class LaporanPenjualan extends Page implements HasForms
                 ->get()
                 ->map(function ($item) {
                     return [
-                        'menu_name' => $item->menu->nama_menu ?? 'N/A',
+                        'menu_name' => $item->menu->nama ?? 'N/A', // PERBAIKAN DI SINI: Gunakan 'nama'
                         'total_quantity' => $item->total_jumlah,
                         'total_price' => $item->total_harga_menu,
                     ];
@@ -161,7 +158,7 @@ class LaporanPenjualan extends Page implements HasForms
                 $periodStart = null;
                 $periodEnd = null;
                 $periodLabel = '';
-                $breakLoop = false; // Flag untuk keluar dari loop
+                $breakLoop = false;
 
                 if ($this->filterType === 'daily') {
                     $periodStart = $currentDate->copy()->startOfDay();
@@ -179,18 +176,15 @@ class LaporanPenjualan extends Page implements HasForms
                     $periodLabel = $currentDate->translatedFormat('F Y');
                     $currentDate->addMonth();
                 } else {
-                    $breakLoop = true; // Keluar jika filterType tidak valid
+                    $breakLoop = true;
                 }
 
                 if ($breakLoop) break;
 
-                // Pastikan kita tidak melampaui endDate global
                 $actualPeriodEnd = $periodEnd->greaterThan($endDate) ? $endDate : $periodEnd;
 
-                // Hitung penjualan untuk periode ini
                 $periodSales = Pesanan::whereBetween('created_at', [$periodStart, $actualPeriodEnd])->sum('total_harga');
 
-                // Hanya tambahkan jika ada penjualan di periode tersebut
                 if ($periodSales > 0) {
                     $this->laporanPeriodik[] = [
                         'period' => $periodLabel,
@@ -198,8 +192,6 @@ class LaporanPenjualan extends Page implements HasForms
                     ];
                 }
 
-                // Logika tambahan untuk mencegah loop tak terbatas jika current date melampaui endDate
-                // Ini penting jika periode yang ditambahkan (day/week/month) melewati endDate secara drastis
                 if ($currentDate->greaterThan($endDate) && ($this->filterType === 'weekly' || $this->filterType === 'monthly')) {
                     break;
                 }
@@ -216,7 +208,6 @@ class LaporanPenjualan extends Page implements HasForms
 
     public static function canAccess(): bool
     {
-        // Memastikan hanya user dengan role 'admin' yang bisa mengakses halaman ini
         return Auth::user()->hasRole('admin');
     }
 

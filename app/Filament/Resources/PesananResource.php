@@ -43,20 +43,20 @@ class PesananResource extends Resource
                         TextInput::make('nama_pelanggan')
                             ->required()
                             ->maxLength(255)
-                            ->readOnly(fn(string $operation): bool => $operation === 'edit' || $operation === 'view')
+                            ->readOnly(fn (string $operation): bool => $operation === 'edit' || $operation === 'view')
                             ->placeholder('Nama lengkap pelanggan'),
                         TextInput::make('telepon_pelanggan')
                             ->required()
                             ->maxLength(20)
                             ->tel()
-                            ->readOnly(fn(string $operation): bool => $operation === 'edit' || $operation === 'view')
+                            ->readOnly(fn (string $operation): bool => $operation === 'edit' || $operation === 'view')
                             ->placeholder('Nomor telepon pelanggan'),
                         Forms\Components\Textarea::make('alamat_pelanggan')
                             ->required()
                             ->maxLength(500)
                             ->rows(3)
                             ->columnSpanFull()
-                            ->readOnly(fn(string $operation): bool => $operation === 'edit' || $operation === 'view')
+                            ->readOnly(fn (string $operation): bool => $operation === 'edit' || $operation === 'view')
                             ->placeholder('Alamat pengiriman pelanggan'),
                     ])->columns(2),
 
@@ -64,11 +64,12 @@ class PesananResource extends Resource
                     ->schema([
                         Repeater::make('details')
                             ->relationship()
-                            ->live()
-                            ->afterStateHydrated(function (Forms\Get $get, Forms\Set $set) {
+                            ->live() // Repeater ini reaktif
+                            // PANGGIL updateTotalHarga HANYA DI SINI PADA REPEATER INDUK
+                            ->afterStateHydrated(function (Forms\Get $get, Forms\Set $set) { // Saat form dimuat
                                 self::updateTotalHarga($get, $set);
                             })
-                            ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set) {
+                            ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set) { // Saat ada perubahan di Repeater
                                 self::updateTotalHarga($get, $set);
                             })
                             ->schema([
@@ -81,20 +82,26 @@ class PesananResource extends Resource
                                     ->distinct()
                                     ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                                     ->columnSpan(2)
-                                    ->live()
+                                    ->live() // Tetap live untuk update harga
+                                    // HAPUS PANGGILAN self::updateTotalHarga DARI SINI
                                     ->afterStateUpdated(function ($state, Forms\Set $set) {
                                         $menu = \App\Models\Menu::find($state);
                                         if ($menu) {
                                             $set('harga', $menu->harga);
                                         }
+                                        // self::updateTotalHarga($get, $set); // BARIS INI DIHAPUS
                                     }),
                                 TextInput::make('kuantitas')
                                     ->numeric()
-                                    ->placeholder('Masukkan Jumlah')
                                     ->minValue(1)
                                     ->required()
-                                    ->live()
+                                    ->default(1)
+                                    ->live() // Tetap live untuk update
                                     ->columnSpan(1),
+                                    // HAPUS PANGGILAN self::updateTotalHarga DARI SINI
+                                    // ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set) {
+                                    //     self::updateTotalHarga($get, $set); // BARIS INI DIHAPUS
+                                    // }),
                                 TextInput::make('harga')
                                     ->numeric()
                                     ->prefix('Rp')
@@ -106,8 +113,9 @@ class PesananResource extends Resource
                             ->columns(4)
                             ->reorderableWithButtons()
                             ->collapsible()
+                            // Panggil updateTotalHarga di sini SETELAH DELETE ITEM
                             ->deleteAction(
-                                fn(FormsAction $action) => $action->after(function (Forms\Get $get, Forms\Set $set) {
+                                fn (FormsAction $action) => $action->after(function (Forms\Get $get, Forms\Set $set) {
                                     self::updateTotalHarga($get, $set);
                                 }),
                             ),
@@ -126,13 +134,13 @@ class PesananResource extends Resource
                                     ])
                                     ->default('bayar_di_tempat')
                                     ->required()
-                                    ->disabled(fn(string $operation): bool => $operation === 'edit' || $operation === 'view')
+                                    ->disabled(fn (string $operation): bool => $operation === 'edit' || $operation === 'view')
                                     ->columnSpan(1),
                                 TextInput::make('total_harga')
                                     ->numeric()
                                     ->prefix('Rp')
                                     ->readOnly()
-                                    ->formatStateUsing(fn($state) => number_format($state, 0, ',', '.')),
+                                    ->formatStateUsing(fn ($state) => number_format($state, 0, ',', '.')),
                                 // Tombol refresh akan ditambahkan di getFormActions()
                             ]),
 
@@ -146,7 +154,7 @@ class PesananResource extends Resource
                             ->required()
                             ->native(false)
                             ->default('selesai')
-                            ->disabled(fn(string $operation): bool => $operation === 'view'),
+                            ->disabled(fn (string $operation): bool => $operation === 'view'),
                         FileUpload::make('bukti_pembayaran')
                             ->label('Bukti Pembayaran')
                             ->image()
@@ -156,9 +164,9 @@ class PesananResource extends Resource
                             ->downloadable()
                             ->openable()
                             ->previewable(true)
-                            ->disabled(fn(?Pesanan $record) => $record && ! is_null($record->bukti_pembayaran))
+                            ->disabled(fn (?Pesanan $record) => $record && ! is_null($record->bukti_pembayaran))
                             ->helperText('Unggah bukti transfer atau e-wallet jika metode pembayaran bukan COD.')
-                            ->visible(fn(Forms\Get $get) => in_array($get('metode_pembayaran'), ['transfer_bank', 'e_wallet']))
+                            ->visible(fn (Forms\Get $get) => in_array($get('metode_pembayaran'), ['transfer_bank', 'e_wallet']))
                             ->columnSpanFull(),
                     ])->columns(2),
             ]);
@@ -196,13 +204,13 @@ class PesananResource extends Resource
                 TextColumn::make('metode_pembayaran')
                     ->label('Metode Pembayaran')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'cod' => 'success',
                         'transfer_bank' => 'info',
                         'e_wallet' => 'info',
                         'bayar_di_tempat' => 'success',
                     })
-                    ->formatStateUsing(fn(string $state): string => ucfirst(str_replace('_', ' ', $state))),
+                    ->formatStateUsing(fn (string $state): string => ucfirst(str_replace('_', ' ', $state))),
                 TextColumn::make('total_harga')
                     ->label('Total Harga')
                     ->prefix('Rp')
@@ -211,7 +219,7 @@ class PesananResource extends Resource
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'menunggu' => 'warning',
                         'diproses' => 'info',
                         'selesai' => 'success',
@@ -232,7 +240,8 @@ class PesananResource extends Resource
                         'diproses' => 'Diproses',
                         'selesai' => 'Selesai',
                         'dibatalkan' => 'Dibatalkan',
-                    ]),
+                    ])
+                    ->default('menunggu'),
                 SelectFilter::make('metode_pembayaran')
                     ->options([
                         'cod' => 'Cash On Delivery',
@@ -248,7 +257,7 @@ class PesananResource extends Resource
                     ->label('Proses Pesanan')
                     ->icon('heroicon-o-check-circle')
                     ->color('primary')
-                    ->visible(fn(Pesanan $record): bool => $record->status === 'menunggu')
+                    ->visible(fn (Pesanan $record): bool => $record->status === 'menunggu')
                     ->action(function (Pesanan $record) {
                         $record->status = 'diproses';
                         $record->save();
@@ -263,9 +272,9 @@ class PesananResource extends Resource
                     ->modalSubmitActionLabel('Ya, Proses'),
                 Action::make('markAsCompleted')
                     ->label('Selesai Pesanan')
-                    ->icon('heroicons-o-check-badge')
+                    ->icon('heroicon-o-check-badge')
                     ->color('success')
-                    ->visible(fn(Pesanan $record): bool => $record->status === 'diproses')
+                    ->visible(fn (Pesanan $record): bool => $record->status === 'diproses')
                     ->action(function (Pesanan $record) {
                         $record->status = 'selesai';
                         $record->save();
@@ -277,12 +286,12 @@ class PesananResource extends Resource
                     ->requiresConfirmation()
                     ->modalHeading('Konfirmasi Selesai Pesanan')
                     ->modalDescription('Apakah Anda yakin ingin mengubah status pesanan ini menjadi "Selesai"?')
-                    ->modalSubmitActionLabel('Ya, Selesai'),
+                            ->modalSubmitActionLabel('Ya, Selesai'),
                 Action::make('markAsCancelled')
                     ->label('Batalkan Pesanan')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
-                    ->visible(fn(Pesanan $record): bool => $record->status !== 'dibatalkan' && $record->status !== 'selesai')
+                    ->visible(fn (Pesanan $record): bool => $record->status !== 'dibatalkan' && $record->status !== 'selesai')
                     ->action(function (Pesanan $record) {
                         $record->status = 'dibatalkan';
                         $record->save();
@@ -318,7 +327,7 @@ class PesananResource extends Resource
         return [
             FormsAction::make('refresh_total_form_action')
                 ->label('Refresh Total')
-                ->icon('heroicons-m-arrow-path')
+                ->icon('heroicon-m-arrow-path')
                 ->color('info')
                 ->action(function (Forms\Get $get, Forms\Set $set) {
                     self::updateTotalHarga($get, $set);
@@ -352,31 +361,31 @@ class PesananResource extends Resource
 
     public static function canCreate(): bool
     {
-        return auth()->user()->hasAnyRole(['kasir']);
+        return auth()->user()->hasAnyRole(['admin', 'kasir']);
     }
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->hasAnyRole(['kasir']);
+        return auth()->user()->hasAnyRole(['admin', 'kasir']);
     }
 
-    public static function canView($record): bool
+    public static function canView( $record): bool
     {
-        return auth()->user()->hasAnyRole(['kasir']);
+        return auth()->user()->hasAnyRole(['admin', 'kasir']);
     }
 
-    public static function canEdit($record): bool
+    public static function canEdit( $record): bool
     {
-        return auth()->user()->hasAnyRole(['kasir']);
+        return auth()->user()->hasAnyRole(['admin', 'kasir']);
     }
 
-    public static function canDelete($record): bool
+    public static function canDelete( $record): bool
     {
-        return auth()->user()->hasAnyRole(['kasir']);
+        return auth()->user()->hasAnyRole(['admin']);
     }
 
     public static function canDeleteAny(): bool
     {
-        return auth()->user()->hasAnyRole(['kasir']);
+        return auth()->user()->hasAnyRole(['admin']);
     }
 }

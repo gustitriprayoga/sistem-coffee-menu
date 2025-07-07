@@ -77,6 +77,33 @@
             @livewire('menu-display')
         </section>
 
+        <section class="py-8 bg-gray-100">
+            <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Temukan Kami</h3>
+                    <p class="text-gray-700 mb-2">
+                        <span class="font-semibold">Alamat:</span> Jl. Letnan Boyak Ujung
+                    </p>
+                    <p class="text-gray-700 mb-2">
+                        <span class="font-semibold">Telepon:</span> +62 823-8681-7911
+                    </p>
+                    <p class="text-gray-700 mb-2">
+                        <span class="font-semibold">Email:</span> info@sederhanacoffee.com
+                    </p>
+                    <p class="text-gray-700">
+                        <span class="font-semibold">Contact Person:</span> John Doe (0812-3456-7890)
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Lokasi Kami</h3>
+                    <div class="aspect-w-16 aspect-h-9 w-full rounded-lg shadow-md overflow-hidden">
+                        {{-- Ganti src iframe dengan link Google Maps Anda --}}
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d838.7418931267581!2d101.01565031554867!3d0.33207764059245115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d515dcfda8455b%3A0x5a507734f06b4837!2sKedai%20Kopi%20%22SEDERHANA%22!5e0!3m2!1sen!2sid!4v1751890510089!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <footer class="bg-gray-800 text-white py-8">
             <div class="container mx-auto text-center text-gray-400">
                 <p>&copy; {{ date('Y') }} Sederhana Coffee Shop. Semua Hak Dilindungi.</p>

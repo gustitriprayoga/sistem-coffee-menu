@@ -48,6 +48,7 @@ class OrderHistoryPage extends Page implements HasTable // Implementasikan HasTa
                         'cod' => 'success',
                         'transfer_bank' => 'info',
                         'e_wallet' => 'info',
+                        'bayar_di_tempat' => 'warning',
                     })
                     ->formatStateUsing(fn (string $state): string => ucfirst(str_replace('_', ' ', $state))),
                 TextColumn::make('total_harga')
@@ -85,6 +86,7 @@ class OrderHistoryPage extends Page implements HasTable // Implementasikan HasTa
                         'cod' => 'Cash On Delivery',
                         'transfer_bank' => 'Transfer Bank',
                         'e_wallet' => 'E-Wallet',
+                        'bayar_di_tempat' => 'Bayar di Tempat',
                     ]),
             ])
             ->actions([

@@ -2,10 +2,10 @@
     <div class="fixed bottom-4 right-4 z-50">
         <button wire:click="toggleCart"
             class="bg-amber-600 text-white p-4 rounded-full shadow-lg hover:bg-amber-700 transition duration-300 ease-in-out relative">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                    d="M3 1a1 1 0 00-1 1v12a1 1 0 001 1h14a1 1 0 001-1V2a1 1 0 00-1-1H3zm0 2h14v10H3V3zM6 15a1 1 0 100 2 1 1 0 000-2zm8 0a1 1 0 100 2 1 1 0 000-2z" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+                <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9zM1 7v1h14V7zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5"/>
+              </svg>
+
             @if (count($cart) > 0)
                 <span
                     class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">{{ array_sum(array_column($cart, 'quantity')) }}</span>
@@ -33,13 +33,16 @@
                     {{-- Daftar Item Keranjang --}}
                     <div> {{-- Div ini membungkus daftar item agar bisa di-scroll bersama form --}}
                         @foreach ($cart as $id => $item)
-                            <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                            <div
+                                class="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
                                 <div class="flex-grow">
                                     <h4 class="font-semibold text-gray-800">{{ $item['name'] }}</h4>
-                                    <p class="text-gray-600 text-sm">Rp{{ number_format($item['price'], 0, ',', '.') }}</p>
+                                    <p class="text-gray-600 text-sm">Rp{{ number_format($item['price'], 0, ',', '.') }}
+                                    </p>
                                 </div>
                                 <div class="flex items-center space-x-3">
-                                    <button wire:click="updateQuantity({{ $id }}, {{ $item['quantity'] - 1 }})"
+                                    <button
+                                        wire:click="updateQuantity({{ $id }}, {{ $item['quantity'] - 1 }})"
                                         class="text-amber-600 hover:text-amber-800 focus:outline-none focus:ring focus:ring-amber-200 rounded-full">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -47,8 +50,10 @@
                                                 d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </button>
-                                    <span class="font-medium text-gray-700 w-6 text-center">{{ $item['quantity'] }}</span>
-                                    <button wire:click="updateQuantity({{ $id }}, {{ $item['quantity'] + 1 }})"
+                                    <span
+                                        class="font-medium text-gray-700 w-6 text-center">{{ $item['quantity'] }}</span>
+                                    <button
+                                        wire:click="updateQuantity({{ $id }}, {{ $item['quantity'] + 1 }})"
                                         class="text-amber-600 hover:text-amber-800 focus:outline-none focus:ring focus:ring-amber-200 rounded-full">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -89,7 +94,8 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="telepon_pelanggan" class="block text-sm font-medium text-gray-700 mb-1">Nomor
+                                <label for="telepon_pelanggan"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Nomor
                                     Telepon</label>
                                 <input type="text" id="telepon_pelanggan" wire:model.live="telepon_pelanggan"
                                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-amber-500 focus:ring-amber-500 @error('telepon_pelanggan') border-red-500 @enderror"
@@ -100,7 +106,8 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="alamat_pelanggan" class="block text-sm font-medium text-gray-700 mb-1">Alamat
+                                <label for="alamat_pelanggan"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Alamat
                                     Pengiriman</label>
                                 <textarea id="alamat_pelanggan" wire:model.live="alamat_pelanggan" rows="3"
                                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-amber-500 focus:ring-amber-500 @error('alamat_pelanggan') border-red-500 @enderror"
@@ -111,7 +118,8 @@
                             </div>
 
                             <div class="mb-6">
-                                <label for="metode_pembayaran" class="block text-sm font-medium text-gray-700 mb-1">Metode
+                                <label for="metode_pembayaran"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Metode
                                     Pembayaran</label>
                                 <select id="metode_pembayaran" wire:model.live="metode_pembayaran"
                                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-amber-500 focus:ring-amber-500 @error('metode_pembayaran') border-red-500 @enderror">
@@ -128,7 +136,8 @@
                             {{-- --- BLOK KONDISIONAL UNTUK INFO PEMBAYARAN DAN UPLOAD FILE --- --}}
                             @if (in_array($metode_pembayaran, ['transfer_bank', 'e_wallet']))
                                 <div class="mb-4">
-                                    <label for="bukti_pembayaran_file" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <label for="bukti_pembayaran_file"
+                                        class="block text-sm font-medium text-gray-700 mb-1">
                                         Unggah Bukti Pembayaran <span class="text-red-500">*</span>
                                     </label>
                                     <input type="file" id="bukti_pembayaran_file" wire:model="buktiPembayaranFile"
@@ -143,31 +152,41 @@
                                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                                     @enderror
 
-                                    <div wire:loading wire:target="buktiPembayaranFile" class="text-green-600 text-sm mt-2">
+                                    <div wire:loading wire:target="buktiPembayaranFile"
+                                        class="text-green-600 text-sm mt-2">
                                         Mengunggah bukti pembayaran...
                                     </div>
 
                                     @if ($buktiPembayaranFile && method_exists($buktiPembayaranFile, 'temporaryUrl'))
-                                        <img src="{{ $buktiPembayaranFile->temporaryUrl() }}" class="mt-4 max-w-full h-auto rounded-md shadow-md">
+                                        <img src="{{ $buktiPembayaranFile->temporaryUrl() }}"
+                                            class="mt-4 max-w-full h-auto rounded-md shadow-md">
                                     @endif
                                 </div>
                             @endif
 
                             @if ($metode_pembayaran === 'transfer_bank')
-                                <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-800 p-4 mb-6 rounded-md" role="alert">
+                                <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-800 p-4 mb-6 rounded-md"
+                                    role="alert">
                                     <p class="font-bold">Info Transfer Bank:</p>
                                     <p>Bank: {{ $bankTransferInfo['nama_bank'] }}</p>
-                                    <p>Nomor Rekening: <span class="font-semibold text-lg">{{ $bankTransferInfo['nomor_rekening'] }}</span></p>
+                                    <p>Nomor Rekening: <span
+                                            class="font-semibold text-lg">{{ $bankTransferInfo['nomor_rekening'] }}</span>
+                                    </p>
                                     <p>Atas Nama: {{ $bankTransferInfo['nama_pemilik'] }}</p>
-                                    <p class="mt-2 text-sm">Mohon lakukan transfer sejumlah total pesanan dan unggah bukti pembayaran di atas.</p>
+                                    <p class="mt-2 text-sm">Mohon lakukan transfer sejumlah total pesanan dan unggah
+                                        bukti pembayaran di atas.</p>
                                 </div>
                             @elseif ($metode_pembayaran === 'e_wallet')
-                                <div class="bg-purple-50 border-l-4 border-purple-400 text-purple-800 p-4 mb-6 rounded-md" role="alert">
+                                <div class="bg-purple-50 border-l-4 border-purple-400 text-purple-800 p-4 mb-6 rounded-md"
+                                    role="alert">
                                     <p class="font-bold">Info Pembayaran E-Wallet:</p>
                                     <p>Platform: {{ $eWalletInfo['nama_ewallet'] }}</p>
-                                    <p>Nomor HP: <span class="font-semibold text-lg">{{ $eWalletInfo['nomor_hp_ewallet'] }}</span></p>
+                                    <p>Nomor HP: <span
+                                            class="font-semibold text-lg">{{ $eWalletInfo['nomor_hp_ewallet'] }}</span>
+                                    </p>
                                     <p>Atas Nama: {{ $eWalletInfo['nama_pemilik'] }}</p>
-                                    <p class="mt-2 text-sm">Mohon lakukan pembayaran sejumlah total pesanan ke nomor ini dan unggah bukti pembayaran di atas.</p>
+                                    <p class="mt-2 text-sm">Mohon lakukan pembayaran sejumlah total pesanan ke nomor
+                                        ini dan unggah bukti pembayaran di atas.</p>
                                 </div>
                             @endif
                             {{-- --- AKHIR BLOK KONDISIONAL --- --}}

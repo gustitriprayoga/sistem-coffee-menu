@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('gambar/logo-sederhana.jpg'))
             ->id('admin')
             ->path('admin')
+            ->profile()
             // ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->login()
             ->colors([
